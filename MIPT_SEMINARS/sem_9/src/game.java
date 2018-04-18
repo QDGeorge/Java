@@ -5,7 +5,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class Game {
-    public int world_size = 100;
+    public int world_size = 15;
     public point world[][] = new point[world_size][world_size];
 
     public void init_field() {
@@ -24,8 +24,8 @@ public class Game {
 
     public int count_number_of_neighbours(int l, int s) {
         int number_of_neighbours = 0;
-        int vertical[] = {1, 1, 1, 0, -1, -1, -1, 0};
-        int horizontal[] = {-1, 0, 1, 1, 1, 0, -1, -1};
+        int vertical[] =   {-1, -1, -1, 0, 1, 1,  1,  0};
+        int horizontal[] = {-1,  0,  1, 1, 1, 0, -1, -1};
 
         for (int type = 0; type < 8; type++) {
             if ((0 <= l + vertical[type]) && (l + vertical[type] < world_size) &&
@@ -43,6 +43,7 @@ public class Game {
         for (int i = 0; i < world_size; i++) {
             for (int j = 0; j < world_size; j++) {
                 new_world[i][j] = new point();
+                new_world[i][j].is_live = false;
             }
         }
 
@@ -54,13 +55,17 @@ public class Game {
 
         for (int i = 0; i < world_size; i++) {
             for (int j = 0; j < world_size; j++) {
-                if (!world[i][j].is_live && count_number_of_neighbours(i, j) == 3) {
+                int number_n = count_number_of_neighbours(i, j);
+                if (!world[i][j].is_live && number_n == 3) {
                     new_world[i][j].is_live = true;
                 }
-                if (world[i][j].is_live && (count_number_of_neighbours(i, j) == 2 | count_number_of_neighbours(i, j) == 3)) {
+                if (world[i][j].is_live && (number_n == 2 || number_n == 3)) {
                     new_world[i][j].is_live = true;
                 }
-                if (world[i][j].is_live && (count_number_of_neighbours(i, j) < 2 | count_number_of_neighbours(i, j) > 3)) {
+                if (world[i][j].is_live && number_n < 2) {
+                    new_world[i][j].is_live = false;
+                }
+                if (world[i][j].is_live && number_n > 3) {
                     new_world[i][j].is_live = false;
                 }
             }
@@ -94,7 +99,7 @@ public class Game {
             }
         };
         int initialDelay = 0;
-        int period = 2;
+        int period = 5;
         executor.scheduleAtFixedRate(task, initialDelay, period, TimeUnit.SECONDS);
     }
 
