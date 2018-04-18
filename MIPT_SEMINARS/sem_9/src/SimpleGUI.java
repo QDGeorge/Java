@@ -59,7 +59,6 @@ public class SimpleGUI extends JFrame { // JFrame - класс, представ
 
     public void fillCell(int x, int y) {
         fillCells.add(new Point(x, y)); // добавляем список клеток на график
-        repaint();
     }
 
     public void rePaint(Game game) {
@@ -69,14 +68,16 @@ public class SimpleGUI extends JFrame { // JFrame - класс, представ
                 fillCells.remove(i);
             }
         }
+        repaint();
         for (int i = 0; i < game.world_size; i++) {
             for (int j = 0; j < game.world_size; j++) {
                 if (game.world[i][j].is_live) {
-                    this.fillCell(i, j);
+                    fillCells.add(new Point(i, j));
                 }
             }
         }
-        repaint();
+
+        //repaint();
     }
 
     public static void main(String[] args) {

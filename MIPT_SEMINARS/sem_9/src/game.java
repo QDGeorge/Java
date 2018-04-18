@@ -38,50 +38,26 @@ public class Game {
     }
 
     public void refield() {
-        point new_world[][] = new point[world_size][world_size];
+        int neighbours[][] = new int[world_size][world_size];
 
         for (int i = 0; i < world_size; i++) {
             for (int j = 0; j < world_size; j++) {
-                new_world[i][j] = new point();
-                new_world[i][j].is_live = false;
+                neighbours[i][j] = count_number_of_neighbours(i, j);
             }
         }
 
         for (int i = 0; i < world_size; i++) {
             for (int j = 0; j < world_size; j++) {
-                if (world[i][j].is_live) {
-                    new_world[i][j].is_live = true;
-                }
-                else {
-                    new_world[i][j].is_live = false;
-                }
-            }
-        }
-
-        for (int i = 0; i < world_size; i++) {
-            for (int j = 0; j < world_size; j++) {
-                int number_n = count_number_of_neighbours(i, j);
-                if (!world[i][j].is_live && number_n == 3) {
-                    new_world[i][j].is_live = true;
-                }
-                if (world[i][j].is_live && (number_n == 2 || number_n == 3)) {
-                    new_world[i][j].is_live = true;
-                }
-                if (world[i][j].is_live && number_n < 2) {
-                    new_world[i][j].is_live = false;
-                }
-                if (world[i][j].is_live && number_n > 3) {
-                    new_world[i][j].is_live = false;
-                }
-            }
-        }
-
-        for (int i = 0; i < world_size; i++) {
-            for (int j = 0; j < world_size; j++) {
-                if (new_world[i][j].is_live) {
+                if (!world[i][j].is_live && neighbours[i][j] == 3) {
                     world[i][j].is_live = true;
                 }
-                else {
+                if (world[i][j].is_live && (neighbours[i][j] == 2 || neighbours[i][j] == 3)) {
+                    world[i][j].is_live = true;
+                }
+                if (world[i][j].is_live && neighbours[i][j] < 2) {
+                    world[i][j].is_live = false;
+                }
+                if (world[i][j].is_live && neighbours[i][j] > 3) {
                     world[i][j].is_live = false;
                 }
             }
