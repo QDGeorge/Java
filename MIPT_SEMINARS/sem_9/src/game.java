@@ -5,7 +5,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class Game {
-    public int world_size = 15;
+    public int world_size = 100;
     public point world[][] = new point[world_size][world_size];
 
     public void init_field() {
@@ -49,7 +49,12 @@ public class Game {
 
         for (int i = 0; i < world_size; i++) {
             for (int j = 0; j < world_size; j++) {
-                new_world[i][j].is_live = world[i][j].is_live;
+                if (world[i][j].is_live) {
+                    new_world[i][j].is_live = true;
+                }
+                else {
+                    new_world[i][j].is_live = false;
+                }
             }
         }
 
@@ -73,7 +78,12 @@ public class Game {
 
         for (int i = 0; i < world_size; i++) {
             for (int j = 0; j < world_size; j++) {
-                world[i][j].is_live = new_world[i][j].is_live;
+                if (new_world[i][j].is_live) {
+                    world[i][j].is_live = true;
+                }
+                else {
+                    world[i][j].is_live = false;
+                }
             }
         }
     }
@@ -99,7 +109,7 @@ public class Game {
             }
         };
         int initialDelay = 0;
-        int period = 5;
+        int period = 1;
         executor.scheduleAtFixedRate(task, initialDelay, period, TimeUnit.SECONDS);
     }
 

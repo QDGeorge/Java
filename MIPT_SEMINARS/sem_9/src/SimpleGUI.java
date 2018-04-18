@@ -32,7 +32,7 @@ public class SimpleGUI extends JFrame { // JFrame - класс, представ
     }
 
     public void paint(Graphics g) { // Функция, которая рисует клетки
-        Game usefull_game = new Game();
+        //Game usefull_game = new Game();
         super.paint(g); //
         Graphics2D g2 = (Graphics2D) g; // создали график на плоскости
         g2.setColor(Color.BLACK); // выбрали цвет для нашего графика
@@ -52,7 +52,7 @@ public class SimpleGUI extends JFrame { // JFrame - класс, представ
         for (Point fillCell : fillCells) { // проходимся циклом по списку из клеток
             int cellX = 10 + (fillCell.x * cell_size); // координата x для нашей выбранной из списка клетки
             int cellY = 70 + (fillCell.y * cell_size); // координата y
-            g.setColor(Color.BLACK);    // выбираем зелёный цвет для дальнейшего рисунка
+            g.setColor(Color.BLACK);    // выбираем черный цвет для дальнейшего рисунка
             g.fillRect(cellX, cellY, cell_size, cell_size); // закрашиваем клетку
         }
     }
@@ -73,10 +73,10 @@ public class SimpleGUI extends JFrame { // JFrame - класс, представ
             for (int j = 0; j < game.world_size; j++) {
                 if (game.world[i][j].is_live) {
                     this.fillCell(i, j);
-                    repaint();
                 }
             }
         }
+        repaint();
     }
 
     public static void main(String[] args) {
