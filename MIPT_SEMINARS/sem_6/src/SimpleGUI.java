@@ -40,7 +40,7 @@ public class SimpleGUI extends JFrame {
         Line2D lin = new Line2D.Float(100, 100, 250, 260);
         g2.draw(lin);
     }
-
+    /*
     public static synchronized void main(String []args) throws Exception {
         SimpleGUI s = new SimpleGUI();
         s.setVisible(true);
@@ -58,5 +58,5 @@ public class SimpleGUI extends JFrame {
         int initialDelay = 0;
         int period = 1;
         executor.scheduleAtFixedRate(task, initialDelay, period, TimeUnit.SECONDS);
-    }
+    }*/
 }
