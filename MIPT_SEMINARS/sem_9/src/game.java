@@ -7,16 +7,20 @@ import java.util.concurrent.TimeUnit;
 public class Game {
     public int world_size = 100;
     public point world[][] = new point[world_size][world_size];
+    public point world_initial[][] = new point[world_size][world_size];
 
     public void init_field() {
         for (int i = 0; i < world_size; i++) {
             for (int j = 0; j < world_size; j++) {
                 world[i][j] = new point();
+                world_initial[i][j] = new point();
                 if (Math.random() < 0.5) {
                     world[i][j].is_live = false;
+                    world_initial[i][j].is_live = false;
                 }
                 else {
                     world[i][j].is_live = true;
+                    world_initial[i][j].is_live = true;
                 }
             }
         }
@@ -64,7 +68,7 @@ public class Game {
         }
     }
 
-    public static void startGame(SimpleGUI s) {
+    public static void startGame(SimpleGUI s) throws Exception{
         Game g = new Game();
         g.init_field();
         /*
@@ -89,7 +93,11 @@ public class Game {
         executor.scheduleAtFixedRate(task, initialDelay, period, TimeUnit.SECONDS);
     }
 
-    public static synchronized void main(String[] args) {
+    /*public void init() {
+        world = world_initial;
+    }*/
+
+    public static synchronized void main(String[] args) throws  Exception{
         SimpleGUI s = new SimpleGUI();
         startGame(s);
         s.setVisible(true);
