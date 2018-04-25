@@ -23,8 +23,9 @@ public class SimpleGUI extends JFrame { // JFrame - класс, представ
     int cell_size = 5;
     private Game usefull_game = new Game();
     public SimpleGUI() { //Конструктор без параметров, который создает список с клетками и рисует кнопки
+        usefull_game.init_field();
         fillCells = new ArrayList(usefull_game.world_size); // Создаем список с клетками, начальный размер списка = 10,
-        setSize((usefull_game.world_size + 2) * cell_size, 70 + (usefull_game.world_size + 8) * cell_size); // устанавливаем размер окна
+        setSize((usefull_game.world_size + 12) * cell_size, 70 + (usefull_game.world_size + 20) * cell_size); // устанавливаем размер окна
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // позволяет указать действие, которое необходимо выполнить, когда закрываем окно, нажатием на крестик (в данном случае мы закрываем окно)
         color = Color.BLACK;    // "Включаем" чёрный цвет для наших "рисунков"
         JPanel panel = new JPanel(); // Создаём панель (прямоугольное пространство, на котором можно размещать элементы)
@@ -47,9 +48,9 @@ public class SimpleGUI extends JFrame { // JFrame - класс, представ
                         @Override
                         public void run() {
                             usefull_game.refield();
-                            SimpleGUI.this.repaint();
+                            SimpleGUI.this.rePaint(usefull_game);
                         }
-                    }, 0, 100, TimeUnit.MILLISECONDS);
+                    }, 0, 1000, TimeUnit.MILLISECONDS);
                 } else {
                     future.cancel(false);
                     button.setText("Run!");
@@ -72,25 +73,32 @@ public class SimpleGUI extends JFrame { // JFrame - класс, представ
         super.paint(g); //
         Graphics2D g2 = (Graphics2D) g; // создали график на плоскости
         g2.setColor(Color.BLACK); // выбрали цвет для нашего графика
+        Image offscreen = createImage((usefull_game.world_size ) * cell_size , 70+(usefull_game.world_size) * cell_size);
+        Graphics2D g2d = (Graphics2D) offscreen.getGraphics();
+        g2d.setColor(getBackground());
+        g2d.fillRect(0, 0, (usefull_game.world_size ) * cell_size + 5, (usefull_game.world_size) * cell_size);
 
-        /*
-        for (int i = cell_size; i <= usefull_game.world_size*cell_size; i = i + cell_size) { // Рисуем вертикальные линии x: от 10 позиции слева до 500; y: от 70 позиции сверху до 510 (их размер как-то там автоматически определен)
-            Line2D lin = new Line2D.Float(i, 70, i, (usefull_game.world_size + 7) * cell_size);
-            g2.draw(lin);
+        for (int i = 2*cell_size; i <= usefull_game.world_size*cell_size + 55; i = i + cell_size) { // Рисуем вертикальные линии x: от 10 позиции слева до 500; y: от 70 позиции сверху до 510 (их размер как-то там автоматически определен)
+            Line2D lin = new Line2D.Float(i, 70, i, (usefull_game.world_size ) * cell_size + 70);
+            g2d.draw(lin);
         }
-        for (int i = 70; i <= (usefull_game.world_size + 6) * cell_size; i = i + cell_size) { // Рисуем горизонтальные линии
-            Line2D lin = new Line2D.Float(10, i, (usefull_game.world_size + 1) * cell_size, i);
-            g2.draw(lin);
+        for (int i = 70; i <= (usefull_game.world_size) * cell_size + 70; i = i + cell_size) { // Рисуем горизонтальные линии
+            Line2D lin = new Line2D.Float(10, i, (usefull_game.world_size) * cell_size , i);
+            g2d.draw(lin);
         }
-        g.setColor(Color.BLACK);
-        g.drawRect(10,70,(usefull_game.world_size) * cell_size,(usefull_game.world_size) * cell_size); // рисуем прямоугольник в соответствии с расположением линий*/
+        g2d.setColor(Color.BLACK);
+        g2d.drawRect(10,70,(usefull_game.world_size ) * cell_size,(usefull_game.world_size) * cell_size); // рисуем прямоугольник в соответствии с расположением линий
+
 
         for (Point fillCell : fillCells) { // проходимся циклом по списку из клеток
             int cellX = 10 + (fillCell.x * cell_size); // координата x для нашей выбранной из списка клетки
             int cellY = 70 + (fillCell.y * cell_size); // координата y
-            g.setColor(Color.BLACK);    // выбираем черный цвет для дальнейшего рисунка
-            g.fillRect(cellX, cellY, cell_size, cell_size); // закрашиваем клетку
+            g2d.setColor(Color.BLACK);    // выбираем черный цвет для дальнейшего рисунка
+            g2d.fillRect(cellX, cellY, cell_size, cell_size); // закрашиваем клетку
         }
+        super.paint(g);
+        Graphics2D g3 = (Graphics2D) g;
+        g3.drawImage(offscreen, 10, 70, this);
     }
 
     public void fillCell(int x, int y) {
@@ -99,11 +107,7 @@ public class SimpleGUI extends JFrame { // JFrame - класс, представ
 
     public void rePaint(Game game) {
         // сначала очистим список
-        if (fillCells.size() != 0) {
-            for (int i = 0; i < fillCells.size(); i++) {
-                fillCells.remove(i);
-            }
-        }
+        fillCells.clear();
 
         for (int i = 0; i < game.world_size; i++) {
             for (int j = 0; j < game.world_size; j++) {

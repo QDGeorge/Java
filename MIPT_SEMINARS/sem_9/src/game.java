@@ -5,9 +5,10 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class Game {
-    public int world_size = 100;
-    public point world[][] = new point[world_size][world_size];
-    public point world_initial[][] = new point[world_size][world_size];
+    public int world_size_x = 100;
+    public int world_size_y = 60;
+    public point world[][] = new point[world_size_y][world_size_x];
+    public point world_initial[][] = new point[world_size_y][world_size_x];
 
     public void init_field() {
         for (int i = 0; i < world_size; i++) {
@@ -99,7 +100,7 @@ public class Game {
 
     public static synchronized void main(String[] args) throws  Exception{
         SimpleGUI s = new SimpleGUI();
-        startGame(s);
+      //  startGame(s);
         s.setVisible(true);
     }
 }
