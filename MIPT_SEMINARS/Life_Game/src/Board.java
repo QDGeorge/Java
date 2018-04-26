@@ -1,6 +1,6 @@
 public class Board {
-    public int world_size_x = 150;
-    public int world_size_y = 100;
+    public int world_size_x = 100;
+    public int world_size_y = 60;
     public Cell world[][] = new Cell[world_size_y][world_size_x];
     public Cell world_initial[][] = new Cell[world_size_y][world_size_x];
 
@@ -9,6 +9,15 @@ public class Board {
             for (int j = 0; j < world_size_x; j++) {
                 world[i][j] = new Cell();
                 world_initial[i][j] = new Cell();
+            }
+        }
+    }
+
+    public void init_clear() {
+        for (int i = 0; i < world_size_y; i++) {
+            for (int j = 0; j < world_size_x; j++) {
+                world[i][j].is_live = false;
+                world_initial[i][j].is_live = false;
             }
         }
     }

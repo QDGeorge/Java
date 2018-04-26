@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +22,7 @@ public class Frame extends JFrame {
     int cell_size = 5;
 
     public Frame() {
-        board.init_random_field();
+        board.init_clear();
         fillCells = new ArrayList(Math.max(board.world_size_x, board.world_size_y));
 
         setSize(cell_size*(board.world_size_x + 3) + cell_size,cell_size*(board.world_size_y+10) + 100);
@@ -34,11 +36,13 @@ public class Frame extends JFrame {
         final JButton resetButton = new JButton("Reset");
         final JButton gliderButton = new JButton("Set glider");
         final JButton randomButton = new JButton("Set random");
+        final JButton clearButton = new JButton("Clear field");
 
         panel.add(runButton);
         panel.add(resetButton);
         panel.add(gliderButton);
         panel.add(randomButton);
+        panel.add(clearButton);
 
         runButton.addActionListener(new ActionListener() {
             @Override
@@ -82,6 +86,39 @@ public class Frame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 board.init_random_field();
                 Frame.this.repaint();
+            }
+        });
+
+        clearButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                board.init_clear();
+                Frame.this.repaint();
+            }
+        });
+
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                PointerInfo a = MouseInfo.getPointerInfo();
+                Point b = a.getLocation();
+                int x = (int) b.getX();
+                int y = (int) b.getY();
+                int x_cell = (x)/cell_size - 2;
+                int y_cell = (y - 140)/cell_size;
+                if (x_cell >= 0 && x_cell < board.world_size_x && y_cell >= 0 && y_cell < board.world_size_y) {
+                    board.world[y_cell][x_cell].is_live = true;
+                }
+
+                for (int i = 0; i < board.world_size_y; i++) {
+                    for (int j = 0; j < board.world_size_x; j++) {
+                        if (board.world[i][j].is_live) {
+                            fillCells.add(new Point(j, i));
+                        }
+                    }
+                }
+                repaint();
             }
         });
     }
