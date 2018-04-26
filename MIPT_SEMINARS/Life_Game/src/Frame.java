@@ -17,13 +17,13 @@ public class Frame extends JFrame {
     private ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
     private Color color; // Объявили переменную типа Color, она отвечает за цвета
     private List<Point> fillCells; // Объявили список, содержащий клетки типа Point
-    int cell_size = 10;
+    int cell_size = 5;
 
     public Frame() {
         board.init_random_field();
         fillCells = new ArrayList(Math.max(board.world_size_x, board.world_size_y));
 
-        setSize(cell_size*(board.world_size_x + 3) + 5,cell_size*(board.world_size_y +8) + 70);
+        setSize(cell_size*(board.world_size_x + 3) + cell_size,cell_size*(board.world_size_y+10) + 100);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         color = Color.BLACK;    // "Включаем" чёрный цвет для наших "рисунков"
@@ -108,32 +108,32 @@ public class Frame extends JFrame {
         super.paint(g);
         //Graphics2D g2 = (Graphics2D) g; // создали график на плоскости
         //g2.setColor(Color.BLACK); // выбрали цвет для нашего графика
-        Image offscreen = createImage((board.world_size_x)* cell_size + 11, (board.world_size_y)* cell_size + 71);
+        Image offscreen = createImage((board.world_size_x)* cell_size + cell_size + 1, (board.world_size_y)* cell_size + 71);
         Graphics2D g2d = (Graphics2D) offscreen.getGraphics();
         g2d.setColor(getBackground());
         g2d.fillRect(0, 0, board.world_size_x * cell_size, board.world_size_y * cell_size);
 
         g2d.setColor(Color.BLACK);
-        for (int i = 10; i <= (board.world_size_x)* cell_size + 10; i = i + cell_size) { // Рисуем вертикальные линии x: от 10 позиции слева до 500; y: от 70 позиции сверху до 510 (их размер как-то там автоматически определен)
+        for (int i = cell_size; i <= (board.world_size_x)* cell_size + cell_size; i = i + cell_size) { // Рисуем вертикальные линии x: от 10 позиции слева до 500; y: от 70 позиции сверху до 510 (их размер как-то там автоматически определен)
             Line2D lin = new Line2D.Float(i, 70, i, board.world_size_y * cell_size + 70);
             g2d.draw(lin);
         }
         for (int i = 70; i <= (board.world_size_y)* cell_size + 70; i = i + cell_size) { // Рисуем горизонтальные линии
-            Line2D lin = new Line2D.Float(10, i, (board.world_size_x+5) * cell_size , i);
+            Line2D lin = new Line2D.Float(cell_size, i, (board.world_size_x) * cell_size + cell_size , i);
             g2d.draw(lin);
         }
         g2d.setColor(Color.BLACK);
-        g2d.drawRect(10,70,board.world_size_x * cell_size + 10,board.world_size_y * cell_size + 70); // рисуем прямоугольник в соответствии с расположением линий
+        g2d.drawRect(cell_size,70,board.world_size_x * cell_size + cell_size,board.world_size_y * cell_size + 70); // рисуем прямоугольник в соответствии с расположением линий
 
 
         for (Point fillCell : fillCells) { // проходимся циклом по списку из клеток
-            int cellX = 10 + (fillCell.x * cell_size); // координата x для нашей выбранной из списка клетки
+            int cellX = cell_size + (fillCell.x * cell_size); // координата x для нашей выбранной из списка клетки
             int cellY = 70 + (fillCell.y * cell_size); // координата y
             g2d.setColor(Color.BLACK);    // выбираем черный цвет для дальнейшего рисунка
             g2d.fillRect(cellX, cellY, cell_size, cell_size); // закрашиваем клетку
         }
         Graphics2D g3 = (Graphics2D) g;
-        g3.drawImage(offscreen, 10, 70, this);
+        g3.drawImage(offscreen, cell_size, 70, this);
     }
 
     public static void main(String[] arg ) {
