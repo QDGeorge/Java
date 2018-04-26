@@ -4,7 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Game {
     public static void main(String[] args) {
-        Board g = new Board();
+        /*Board g = new Board();
         g.init_glider();
 
         for (int i = 0; i < g.world_size_y; i++) {
@@ -35,6 +35,9 @@ public class Game {
         int initialDelay = 0;
         int period = 1;
         executor.scheduleAtFixedRate(task, initialDelay, period, TimeUnit.SECONDS);
-
+        */
+        Frame s = new Frame();
+        //  startGame(s);
+        s.setVisible(true);
     }
 }

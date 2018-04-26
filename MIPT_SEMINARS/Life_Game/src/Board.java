@@ -1,6 +1,6 @@
 public class Board {
-    public int world_size_x = 10;
-    public int world_size_y = 10;
+    public int world_size_x = 40;
+    public int world_size_y = 30;
     public Cell world[][] = new Cell[world_size_y][world_size_x];
     public Cell world_initial[][] = new Cell[world_size_y][world_size_x];
 
@@ -28,6 +28,14 @@ public class Board {
         }
     }
 
+    public void to_initial() {
+        for (int i = 0; i < world_size_y; i++) {
+            for (int j = 0; j < world_size_x; j++) {
+                world[i][j].is_live = world_initial[i][j].is_live;
+            }
+        }
+    }
+
     public void init_glider() {
         for (int i = 0; i < world_size_y; i++) {
             for (int j = 0; j < world_size_x; j++) {
@@ -38,8 +46,12 @@ public class Board {
 
         world[0][1].is_live = true;
         world[1][2].is_live = true;
+
+        world_initial[0][1].is_live = true;
+        world_initial[1][2].is_live = true;
         for (int i = 0; i < 3; i++) {
             world[2][i].is_live = true;
+            world_initial[2][i].is_live = true;
         }
     }
 
