@@ -1,6 +1,6 @@
 public class Board {
     public int world_size_x = 100;
-    public int world_size_y = 60;
+    public int world_size_y = 50;
     public Cell world[][] = new Cell[world_size_y][world_size_x];
     public Cell world_initial[][] = new Cell[world_size_y][world_size_x];
 
